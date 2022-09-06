@@ -213,7 +213,7 @@ class ProjectManager {
   };
 
   displayMainForm() {
-    /* if (!this.clickedProject) return alert('You must create a project first'); */
+    if (!this.clickedProject) return alert('You must create a project first');
 
     formMain.classList.remove('hidden');
     inputTitle.value = inputDueDate.value = '';
