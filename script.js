@@ -26,9 +26,13 @@ class toDo {
   id = self.crypto.randomUUID();
   constructor(title, dueDate) {
     (this.title = title), (this.dueDate = dueDate);
+    this.isChecked = false;
+  }
+
+  setCheckBoxAttribute() {
+    return this.isChecked === true ? 'checked' : '';
   }
 }
-
 // project
 class Project {
   id = self.crypto.randomUUID();
@@ -178,6 +182,9 @@ class ProjectManager {
                     <button class="btn btn__todo__edit">edit</button>
                    <button class="btn btn__todo__delete">delete</button>
                 </div>
+              <div class="todo__item">
+                 <input class="checkBox" type="checkbox"  name="checkbox" ${todo.setCheckBoxAttribute()} />
+                </div>
                   `;
 
       mainList.insertAdjacentElement('afterBegin', li);
@@ -187,6 +194,9 @@ class ProjectManager {
 
       // edit todo
       this.addEditEvent(li, todo);
+
+      // checkbox
+      this.addCheckBoxEvent(li, todo);
     });
 
     this.hideForm(formMain);
@@ -228,8 +238,23 @@ class ProjectManager {
     });
   }
 
+  addCheckBoxEvent(element, todo) {
+    const checkBox = element.querySelector('.checkBox');
+
+    this.clickedTodoId = this.clickedProject.todos.findIndex(
+      (td) => td.id === todo.id
+    );
+
+    checkBox.addEventListener(
+      'change',
+      () => (todo.isChecked = !todo.isChecked)
+    );
+  }
+
   renderTodos = function (e) {
     this.detectClickedProject(e);
+
+    mainList.innerHTML = '';
 
     this.clickedProject.todos.forEach((todo, i) => {
       const li = document.createElement('li');
@@ -293,6 +318,9 @@ class ProjectManager {
                     <button class="btn btn__todo__edit">edit</button>
                    <button class="btn btn__todo__delete">delete</button>
                 </div>
+              <div class="todo__item">
+                 <input class="checkBox" type="checkbox"  name="checkbox" ${todo.setCheckBoxAttribute()} />
+                </div>
                   `;
 
       mainList.insertAdjacentElement('afterBegin', li);
@@ -304,6 +332,9 @@ class ProjectManager {
 
       // edit todo
       this.addEditEvent(li, todo);
+
+      // checkbox
+      this.addCheckBoxEvent(li, todo);
 
       this.hideForm(formEdit);
     });
