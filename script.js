@@ -1,5 +1,9 @@
 'use strict';
 
+//imports
+import ToDo from './todo.js';
+import Project from './project.js';
+
 // sidebar
 const formSidebar = document.querySelector('.form__sidebar');
 const inputProject = document.getElementById('input__project');
@@ -20,32 +24,6 @@ const formEdit = document.querySelector('.form__edit');
 const inputTitleEdited = document.getElementById('titleEdited');
 const inputDateEdited = document.getElementById('dueDateEdited');
 const btnCancelTodoEdit = document.querySelector('.btn__cancel__todo__edit');
-
-// todos
-class toDo {
-  id = self.crypto.randomUUID();
-  constructor(title, dueDate) {
-    (this.title = title), (this.dueDate = dueDate);
-    this.isChecked = false;
-  }
-
-  setCheckBoxAttribute() {
-    return this.isChecked === true ? 'checked' : '';
-  }
-}
-// project
-class Project {
-  id = self.crypto.randomUUID();
-  todos = [];
-  constructor(projectTitle) {
-    this.projectTitle = projectTitle;
-  }
-
-  pushTodo(todo) {
-    this.todos.push(todo);
-    return [...this.todos];
-  }
-}
 
 // project manager
 class ProjectManager {
@@ -167,7 +145,7 @@ class ProjectManager {
     // const date = new Date(inputDueDate.value);
     // const dateFormated = new Intl.DateTimeFormat('en-US').format(date);
 
-    this.addTodo = new toDo(inputTitle.value, inputDueDate.value);
+    this.addTodo = new ToDo(inputTitle.value, inputDueDate.value);
 
     this.clickedProject.todos.push(this.addTodo);
 
@@ -296,7 +274,7 @@ class ProjectManager {
 
     mainList.innerHTML = '';
 
-    this.addTodo = new toDo(inputTitleEdited.value, inputDateEdited.value);
+    this.addTodo = new ToDo(inputTitleEdited.value, inputDateEdited.value);
 
     this.clickedProject.todos[this.clickedTodoId] = this.addTodo;
 
@@ -358,7 +336,7 @@ class ProjectManager {
 
   preventDefaultSubmitEdit(e) {
     e.preventDefault();
-    inputTitleEdited = inputDateEdited.value = '';
+    inputTitleEdited.value = inputDateEdited.value = '';
     this.hideForm(formEdit);
   }
 
