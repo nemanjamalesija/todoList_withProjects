@@ -1,8 +1,8 @@
 'use strict';
 
 //import classes
-import ToDo from './todo.js';
-import Project from './project.js';
+import ToDo from './classComponents/todo.js';
+import Project from './classComponents/project.js';
 
 // import forms DOM
 import {
@@ -12,7 +12,7 @@ import {
   preventDefaultSubmitProject,
   preventDefaultSubmitTodo,
   preventDefaultSubmitEdit,
-} from './formDOM.js';
+} from './modulesDOM/formDOM.js';
 
 // import projects DOM
 import { updateProjectsDom } from './projectDOM.js';
