@@ -21,7 +21,13 @@ import {
 } from './modulesDOM/projectDOM.js';
 
 // import todos DOM
-import { createTodoContent, li } from './modulesDOM/todoDOM.js';
+import {
+  createTodoContent,
+  addDeleteEvent,
+  addEditEvent,
+  addCheckBoxEvent,
+  attachTodoEventListeners,
+} from './modulesDOM/todoDOM.js';
 
 export const formSidebar = document.querySelector('.form__sidebar');
 export const inputProject = document.getElementById('input__project');
@@ -123,68 +129,16 @@ class ProjectManager {
     mainList.innerHTML = '';
 
     this.clickedProject.todos.forEach((todo) => {
+      const li = document.createElement('li');
+
       createTodoContent(todo, li);
 
-      // delete todo
-      this.addDeleteEvent(li, todo);
-
-      // edit todo
-      this.addEditEvent(li, todo);
-
-      // checkbox
-      this.addCheckBoxEvent(li, todo);
+      attachTodoEventListeners(li, todo);
     });
 
     hideForm(formMain);
 
     inputTitle.value = inputDueDate.value = '';
-  }
-
-  addDeleteEvent(element, todo) {
-    const btnDeleteTodo = element.querySelector('.btn__todo__delete');
-
-    btnDeleteTodo.addEventListener('click', () => {
-      this.clickedTodoId = this.clickedProject.todos.findIndex(
-        (td) => td.id === todo.id
-      );
-
-      this.clickedProject.todos.splice(this.clickedTodoId, 1);
-      element.remove();
-    });
-  }
-
-  addEditEvent(element, todo) {
-    const btnEdit = element.querySelector('.btn__todo__edit');
-
-    btnEdit.addEventListener('click', (e) => {
-      e.preventDefault();
-
-      this.clickedTodoId = this.clickedProject.todos.findIndex(
-        (td) => td.id === todo.id
-      );
-
-      formEdit.classList.remove('hidden');
-
-      element.parentNode.insertBefore(formEdit, element.nextSibling);
-      inputTitleEdited.value =
-        this.clickedProject.todos[this.clickedTodoId].title;
-
-      inputDateEdited.value =
-        this.clickedProject.todos[this.clickedTodoId].dueDate;
-    });
-  }
-
-  addCheckBoxEvent(element, todo) {
-    const checkBox = element.querySelector('.checkBox');
-
-    this.clickedTodoId = this.clickedProject.todos.findIndex(
-      (td) => td.id === todo.id
-    );
-
-    checkBox.addEventListener(
-      'change',
-      () => (todo.isChecked = !todo.isChecked)
-    );
   }
 
   renderTodos = function (e) {
@@ -199,14 +153,7 @@ class ProjectManager {
 
       createTodoContent(todo, li);
 
-      // delete todo
-      this.addDeleteEvent(li, todo);
-
-      // edit todo
-      this.addEditEvent(li, todo);
-
-      // checkbox
-      this.addCheckBoxEvent(li, todo);
+      attachTodoEventListeners(li, todo);
     });
   };
 
@@ -221,20 +168,15 @@ class ProjectManager {
     this.clickedProject.todos[this.clickedTodoId] = this.addTodo;
 
     this.clickedProject.todos.forEach((todo, i) => {
+      const li = document.createElement('li');
+
       createTodoContent(todo, li);
 
-      inputTitleEdited.value = inputDateEdited.value = '';
-
-      // delete todo
-      this.addDeleteEvent(li, todo);
-
-      // edit todo
-      this.addEditEvent(li, todo);
-
-      // checkbox
-      this.addCheckBoxEvent(li, todo);
+      attachTodoEventListeners(li, todo);
 
       hideForm(formEdit);
+
+      inputTitleEdited.value = inputDateEdited.value = '';
     });
   }
 }
