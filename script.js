@@ -15,9 +15,11 @@ import {
 } from './modulesDOM/formDOM.js';
 
 // import projects DOM
-import { updateProjectsDom } from './modulesDOM/projectDOM';
+import {
+  updateProjectsDom,
+  deleteProjectEvent,
+} from './modulesDOM/projectDOM.js';
 
-// sidebar
 export const formSidebar = document.querySelector('.form__sidebar');
 export const inputProject = document.getElementById('input__project');
 export const sidebarList = document.querySelector('.sidebar__list');
