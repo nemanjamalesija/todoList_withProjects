@@ -140,6 +140,8 @@ class ProjectManager {
       attachTodoEventListeners(li, todo);
     });
 
+    this.setLocalStorage();
+
     hideForm(formMain);
 
     inputTitle.value = inputDueDate.value = '';
@@ -152,7 +154,7 @@ class ProjectManager {
 
     mainList.innerHTML = '';
 
-    this.clickedProject.todos.forEach((todo, i) => {
+    this.clickedProject.todos.forEach((todo) => {
       const li = document.createElement('li');
 
       createTodoContent(todo, li);
@@ -186,17 +188,44 @@ class ProjectManager {
 
   setLocalStorage() {
     localStorage.setItem('projects', JSON.stringify(this.projects));
+
+    if (!this.clickedProject) return;
+    localStorage.setItem('todos', JSON.stringify(this.clickedProject.todos));
   }
 
   getLocalStorage() {
     const data = JSON.parse(localStorage.getItem('projects'));
+    const data2 = JSON.parse(localStorage.getItem('todos'));
     console.log(data);
+    console.log(data2);
 
     if (!data) return;
+    if (!data2) return;
 
     this.projects = data;
 
-    this.projects.forEach((project) => updateProjectsDom);
+    this.projects.forEach((project) => {
+      const li = document.createElement('li');
+      li.className = 'sidebar__list__item';
+      li.setAttribute('id', `${project.id}`);
+
+      let html;
+
+      html = `<p>
+                  ${project.projectTitle}
+                </p>
+                  <p class="span__icon">
+                    <i class="las la-times-circle icon icon__close__project"></i>
+                  </p>
+              `;
+      li.insertAdjacentHTML('afterBegin', html);
+      sidebarList.appendChild(li);
+
+      const icon = li.querySelector('.icon__close__project');
+
+      // delete project
+      deleteProjectEvent(icon, li);
+    });
   }
 }
 
