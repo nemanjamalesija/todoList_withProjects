@@ -112,13 +112,6 @@ class ProjectManager {
     inputProject.value = '';
   }
 
-  detectClickedProject(e) {
-    const clicked = e.target.closest('.sidebar__list__item');
-    this.clickedProject = this.projects.find(
-      (project) => project.id === clicked.id
-    );
-  }
-
   //// todos
   createTodo(e) {
     e.preventDefault();
@@ -140,15 +133,16 @@ class ProjectManager {
       attachTodoEventListeners(li, todo);
     });
 
-    this.setLocalStorage();
-
     hideForm(formMain);
 
     inputTitle.value = inputDueDate.value = '';
   }
 
-  renderTodos = function (e) {
-    this.detectClickedProject(e);
+  renderTodos(e) {
+    const clicked = e.target.closest('.sidebar__list__item');
+    this.clickedProject = this.projects.find(
+      (project) => project.id === clicked.id
+    );
 
     if (!this.clickedProject) return;
 
@@ -161,7 +155,7 @@ class ProjectManager {
 
       attachTodoEventListeners(li, todo);
     });
-  };
+  }
 
   // form edit todo
   formEditSubmit(e) {
@@ -190,17 +184,14 @@ class ProjectManager {
     localStorage.setItem('projects', JSON.stringify(this.projects));
 
     if (!this.clickedProject) return;
-    localStorage.setItem('todos', JSON.stringify(this.clickedProject.todos));
   }
 
   getLocalStorage() {
     const data = JSON.parse(localStorage.getItem('projects'));
-    const data2 = JSON.parse(localStorage.getItem('todos'));
+
     console.log(data);
-    console.log(data2);
 
     if (!data) return;
-    if (!data2) return;
 
     this.projects = data;
 
