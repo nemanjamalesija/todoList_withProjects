@@ -16,4 +16,6 @@ The challenging part of this project was figuring out how to process the data, h
 
 Refactoring with ES6 modules was a challenge, but made me understand the power of using them. The biggest benefits that I can see at this point are better organized code and reduced utilisation of the this keyword which results in a cleaner and more readable code.
 
-This is the project that made me learn the most at this point. Still a long way to go, but getting more confident with each passing day.
+Finally, this projects data is saved in local storage. This was my first time working with this API and It was quite challenging finding the correct way to read the data from the local storage, and display it back when the application starts.
+
+This is the project that made me learn the most at this point. Still a long way to go, but getting more confident each day.

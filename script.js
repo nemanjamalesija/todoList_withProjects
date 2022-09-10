@@ -59,9 +59,9 @@ class ProjectManager {
   clickedTodoId;
 
   constructor() {
-    ///// EVENT LISTENERS
-
     this.getLocalStorage();
+
+    ///// EVENT LISTENERS
 
     //display todos form, check for no todo
     btnNewTodo.addEventListener('click', displayMainForm);
@@ -116,12 +116,9 @@ class ProjectManager {
   createTodo(e) {
     e.preventDefault();
 
-    // const date = new Date(inputDueDate.value);
-    // const dateFormated = new Intl.DateTimeFormat('en-US').format(date);
-
     this.newTodo = new ToDo(inputTitle.value, inputDueDate.value);
 
-    this.clickedProject.todos.push(this.newTodo);
+    this.clickedProject.addTodo(this.newTodo);
 
     mainList.innerHTML = '';
 
@@ -176,6 +173,8 @@ class ProjectManager {
 
       attachTodoEventListeners(li, todo);
 
+      this.setLocalStorage();
+
       hideForm(formEdit);
 
       inputTitleEdited.value = inputDateEdited.value = '';
@@ -192,16 +191,13 @@ class ProjectManager {
 
     if (!data) return;
 
-    console.log(data);
-
-    // this is for projects, and it works ok
     data.forEach((data) => {
       const project = new Project(data.projectTitle);
       this.addProject(project);
 
       data.todos.forEach((td) => {
         const todo = new ToDo(td.title, td.dueDate, td.isChecked);
-        project.pushTodo(todo);
+        project.addTodo(todo);
       });
     });
 
@@ -231,5 +227,4 @@ class ProjectManager {
   }
 }
 
-// project manager
 export const app = new ProjectManager();
