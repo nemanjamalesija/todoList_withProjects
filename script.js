@@ -133,6 +133,8 @@ class ProjectManager {
       attachTodoEventListeners(li, todo);
     });
 
+    this.setLocalStorage();
+
     hideForm(formMain);
 
     inputTitle.value = inputDueDate.value = '';
@@ -185,16 +187,25 @@ class ProjectManager {
 
     if (!this.clickedProject) return;
   }
-
   getLocalStorage() {
     const data = JSON.parse(localStorage.getItem('projects'));
 
-    console.log(data);
-
     if (!data) return;
 
-    this.projects = data;
+    console.log(data);
 
+    // this is for projects, and it works ok
+    data.forEach((data) => {
+      const project = new Project(data.projectTitle);
+      this.addProject(project);
+
+      data.todos.forEach((td) => {
+        const todo = new ToDo(td.title, td.dueDate, td.isChecked);
+        project.pushTodo(todo);
+      });
+    });
+
+    // just DOM stuff
     this.projects.forEach((project) => {
       const li = document.createElement('li');
       li.className = 'sidebar__list__item';
